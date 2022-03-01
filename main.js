@@ -18,7 +18,10 @@ function displayPhone(datas){
                 <div class="card-body">
                 <h5 class="card-title">${data.phone_name}</h5>
                 <p class="card-text">${data.brand}</p>
-                <button onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details</button>
+                <form action='#phone-details'>
+                    <button onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details</button>
+                </form>
+                
                 </div>
             </div>
             </div>
@@ -28,14 +31,30 @@ function displayPhone(datas){
 } 
 
 const moreDetails = id =>{
-
     const url = `https://openapi.programming-hero.com/api/phone/${id}`
     fetch(url)
     .then(res =>res.json())
     .then(data=>displayDetails(data.data))
 }
+
+const otherFeatures = data=>{
+    if(data){
+        return `
+        <p class="card-text"><b>WLAN :</b> ${data.WLAN}</p>
+        <p class="card-text"><b>Bluetooth :</b> ${data.Bluetooth}</p>
+        <p class="card-text"><b>GPS :</b> ${data.GPS}</p>
+        <p class="card-text"><b>NFC :</b> ${data.NFC}</p>
+        <p class="card-text"><b>Radio :</b> ${data.Radio}</p>
+        <p class="card-text"><b>USB :</b> ${data.USB}</p>
+        `
+    }else{
+        return `<p class="card-text"><b>NO Others Data Found</p>`
+    }
+}
+
 const displayDetails = data =>{
     const phoneContainer = document.getElementById('phone-details')
+    const releaseDate = data.releaseDate ? data.releaseDate:"No Releasedate"
     phoneContainer.innerText = ''
     const div = document.createElement('div')
     div.innerHTML = `
@@ -44,7 +63,7 @@ const displayDetails = data =>{
         <img height="400px" src=${data.image} class="card-img-top" alt="...">
         <h4 class="card-title">${data.name}</h4>
         <h5 class="card-title">${data.brand}</h5>
-        <p class="card-text"><b>Released Date :</b> ${data.releaseDate}</p>
+        <p class="card-text"><b>Released Date :</b> ${releaseDate}</p>
         <h4 class="card-title">Main Features</h4>
         <p class="card-text"><b>Chipset :</b> ${data.mainFeatures.chipSet}</p>
         <p class="card-text"><b>Display :</b> ${data.mainFeatures.displaySize}</p>
@@ -52,12 +71,7 @@ const displayDetails = data =>{
         <p class="card-text"><b>Storage :</b> ${data.mainFeatures.storage}</p>
         <p class="card-text"><b>Sensors :</b> ${data.mainFeatures.sensors}</p>
         <h4 class="card-title">Other Features</h4>
-        <p class="card-text"><b>WLAN :</b> ${data.others.WLAN}</p>
-        <p class="card-text"><b>Bluetooth :</b> ${data.others.Bluetooth}</p>
-        <p class="card-text"><b>GPS :</b> ${data.others.GPS}</p>
-        <p class="card-text"><b>NFC :</b> ${data.others.NFC}</p>
-        <p class="card-text"><b>Radio :</b> ${data.others.Radio}</p>
-        <p class="card-text"><b>USB :</b> ${data.others.USB}</p>
+        ${otherFeatures(data.others)}
         </div>
    </div>
     `
