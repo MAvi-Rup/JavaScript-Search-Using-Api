@@ -41,10 +41,23 @@ const displayDetails = data =>{
     div.innerHTML = `
     <div class="card w-50 m-auto">
         <div class="card-body">
-        <img  height="400px" src=${data.image} class="card-img-top " alt="...">
+        <img height="400px" src=${data.image} class="card-img-top" alt="...">
         <h4 class="card-title">${data.name}</h4>
         <h5 class="card-title">${data.brand}</h5>
-        <p class="card-text">${data.releaseDate}</p>
+        <p class="card-text"><b>Released Date :</b> ${data.releaseDate}</p>
+        <h4 class="card-title">Main Features</h4>
+        <p class="card-text"><b>Chipset :</b> ${data.mainFeatures.chipSet}</p>
+        <p class="card-text"><b>Display :</b> ${data.mainFeatures.displaySize}</p>
+        <p class="card-text"><b>Memory :</b> ${data.mainFeatures.memory}</p>
+        <p class="card-text"><b>Storage :</b> ${data.mainFeatures.storage}</p>
+        <p class="card-text"><b>Sensors :</b> ${data.mainFeatures.sensors}</p>
+        <h4 class="card-title">Other Features</h4>
+        <p class="card-text"><b>WLAN :</b> ${data.others.WLAN}</p>
+        <p class="card-text"><b>Bluetooth :</b> ${data.others.Bluetooth}</p>
+        <p class="card-text"><b>GPS :</b> ${data.others.GPS}</p>
+        <p class="card-text"><b>NFC :</b> ${data.others.NFC}</p>
+        <p class="card-text"><b>Radio :</b> ${data.others.Radio}</p>
+        <p class="card-text"><b>USB :</b> ${data.others.USB}</p>
         </div>
    </div>
     `
