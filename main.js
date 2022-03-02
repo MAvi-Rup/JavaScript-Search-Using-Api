@@ -1,15 +1,33 @@
-
+const errorMessage = error =>{
+    const phoneContainer = document.getElementById('phone-details')
+    phoneContainer.innerText =''
+    document.getElementById('display-phone').innerText= ''
+    const div = document.createElement('div')
+    div.innerHTML = `
+        <div class="alert alert-danger" role="alert">
+           ${error}
+        </div>
+    `
+    phoneContainer.appendChild(div)
+}
 document.getElementById('search-phone').addEventListener('click',()=>{
     const searchText = document.getElementById('search-input').value
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     fetch(url)
     .then(res =>res.json())
-    .then(data=>displayPhone(data.data))
+    .then(data=>{if((data.data).length<1){
+        errorMessage('No Data Found Please Search Again')
+    }else{
+        displayPhone(data.data)
+
+    }})
+    document.getElementById('search-input').value = ''
 })
 
 const maxDisplayphone = datas =>{
     const phoneContainer = document.getElementById('display-phone')
     phoneContainer.innerText = ''
+    document.getElementById('phone-details').innerText=''
     for(const data of datas){
         const div = document.createElement('div')
         div.innerHTML = `
@@ -29,16 +47,10 @@ const maxDisplayphone = datas =>{
         `
         phoneContainer.appendChild(div)
     }
-
-}
-function maxDisplayphone2(datas){
-    console.log(Object.keys(datas))
 }
 
 function displayPhone(datas){
-    console.log(datas)
     const newdata = datas.slice(0,20)
-    console.log(newdata)
     const buttonContainer = document.getElementById('showmore-btn')
     if(datas.length<=20){
         maxDisplayphone(datas)
