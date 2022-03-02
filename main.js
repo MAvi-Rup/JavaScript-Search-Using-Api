@@ -7,8 +7,9 @@ document.getElementById('search-phone').addEventListener('click',()=>{
     .then(data=>displayPhone(data.data))
 })
 
-function displayPhone(datas){
+const maxDisplayphone = datas =>{
     const phoneContainer = document.getElementById('display-phone')
+    phoneContainer.innerText = ''
     for(const data of datas){
         const div = document.createElement('div')
         div.innerHTML = `
@@ -28,6 +29,59 @@ function displayPhone(datas){
         `
         phoneContainer.appendChild(div)
     }
+
+}
+function maxDisplayphone2(datas){
+    console.log(Object.keys(datas))
+}
+
+function displayPhone(datas){
+    console.log(datas)
+    const newdata = datas.slice(0,20)
+    console.log(newdata)
+    const buttonContainer = document.getElementById('showmore-btn')
+    if(datas.length<=20){
+        maxDisplayphone(datas)
+
+    }else{
+        maxDisplayphone(newdata)
+        buttonContainer.innerText=''
+        const div = document.createElement('div')
+        div.innerHTML = `
+        <div class="d-grid col-6 mx-auto">
+        <button class="btn btn-success" type="button" id='show'>Show All Results</button>
+      </div>
+        `
+        buttonContainer.appendChild(div)
+    }
+    document.getElementById('show').addEventListener('click',()=>{
+        const phoneContainer = document.getElementById('display-phone')
+        phoneContainer.innerText = ''
+    for(const data of datas){
+        const div = document.createElement('div')
+        div.innerHTML = `
+            <div class="col">
+            <div class="card">
+                <img height="350px" src=${data.image} class="card-img-top" alt="...">
+                <div class="card-body">
+                <h5 class="card-title">${data.phone_name}</h5>
+                <p class="card-text">${data.brand}</p>
+                <form action='#phone-details'>
+                    <button onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details</button>
+                </form>
+                
+                </div>
+            </div>
+            </div>
+        `
+        phoneContainer.appendChild(div)
+        document.getElementById('show').style.display='none'
+    }
+
+
+    })
+
+
 } 
 
 const moreDetails = id =>{
