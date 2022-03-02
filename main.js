@@ -8,8 +8,17 @@ const errorMessage = error =>{
            ${error}
         </div>
     `
+    document.getElementById('spinner').style.display='none'
     phoneContainer.appendChild(div)
 }
+function spinner(){
+    const spinner = document.getElementById('spinner')
+    document.getElementById('display-phone').innerText=''
+    spinner.style.display = 'block'
+    return spinner;
+}
+
+// Search Button Eventlistener
 document.getElementById('search-phone').addEventListener('click',()=>{
     const searchText = document.getElementById('search-input').value
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
@@ -22,6 +31,7 @@ document.getElementById('search-phone').addEventListener('click',()=>{
 
     }})
     document.getElementById('search-input').value = ''
+    spinner()
 })
 
 const maxDisplayphone = datas =>{
@@ -45,6 +55,7 @@ const maxDisplayphone = datas =>{
             </div>
             </div>
         `
+        document.getElementById('spinner').style.display='none'
         phoneContainer.appendChild(div)
     }
 }
@@ -61,7 +72,7 @@ function displayPhone(datas){
         const div = document.createElement('div')
         div.innerHTML = `
         <div class="d-grid col-6 mx-auto">
-        <button class="btn btn-success" type="button" id='show'>Show All Results</button>
+        <button class="btn btn-success mb-3 mt-3" type="button" id='show'>Show All Results</button>
       </div>
         `
         buttonContainer.appendChild(div)
@@ -89,20 +100,16 @@ function displayPhone(datas){
         phoneContainer.appendChild(div)
         document.getElementById('show').style.display='none'
     }
-
-
     })
-
-
 } 
 
+//More Details API calling
 const moreDetails = id =>{
     const url = `https://openapi.programming-hero.com/api/phone/${id}`
     fetch(url)
     .then(res =>res.json())
     .then(data=>displayDetails(data.data))
 }
-
 const otherFeatures = data=>{
     if(data){
         return `
