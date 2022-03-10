@@ -19,7 +19,7 @@ function spinner(){
 }
 
 // Search Button Eventlistener
-document.getElementById('search-phone').addEventListener('click',()=>{
+document.getElementById('search-phone').addEventListener('click',(e)=>{
     const searchText = document.getElementById('search-input').value
     const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
     fetch(url)
@@ -32,6 +32,8 @@ document.getElementById('search-phone').addEventListener('click',()=>{
     }})
     document.getElementById('search-input').value = ''
     spinner()
+    e.preventDefault()
+
 })
 
 const maxDisplayphone = datas =>{
@@ -41,23 +43,24 @@ const maxDisplayphone = datas =>{
     for(const data of datas){
         const div = document.createElement('div')
         div.innerHTML = `
-            <div class="col">
-            <div class="card">
-                <img height="350px" src=${data.image} class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">${data.phone_name}</h5>
-                <p class="card-text">${data.brand}</p>
-                <form action='#phone-details'>
-                    <button onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details</button>
-                </form>
-                
-                </div>
+        <div class="col">
+        <div class="card">
+            <img height="350px" src=${data.image} class="card-img-top" alt="...">
+            <div class="card-body">
+            <h5 class="card-title">${data.phone_name}</h5>
+            <p class="card-text">${data.brand}</p>
+            
+            <a href="#search-phone" onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details</a>
             </div>
-            </div>
-        `
+        </div>
+        </div>
+    `
         document.getElementById('spinner').style.display='none'
         phoneContainer.appendChild(div)
     }
+}
+function showallData(datas){
+
 }
 
 function displayPhone(datas){
@@ -72,36 +75,37 @@ function displayPhone(datas){
         const div = document.createElement('div')
         div.innerHTML = `
         <div class="d-grid col-6 mx-auto">
-        <button class="btn btn-success mb-3 mt-3" type="button" id='show'>Show All Results</button>
+        <button class="btn btn-success mb-3 mt-3" type="button" id="show">Show All Results</button>
       </div>
         `
         buttonContainer.appendChild(div)
-    }
-    document.getElementById('show').addEventListener('click',()=>{
-        const phoneContainer = document.getElementById('display-phone')
-        phoneContainer.innerText = ''
-    for(const data of datas){
-        const div = document.createElement('div')
-        div.innerHTML = `
-            <div class="col">
-            <div class="card">
-                <img height="350px" src=${data.image} class="card-img-top" alt="...">
-                <div class="card-body">
-                <h5 class="card-title">${data.phone_name}</h5>
-                <p class="card-text">${data.brand}</p>
-                <form action='#phone-details'>
-                    <button onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details</button>
-                </form>
-                
+
+        document.getElementById('show').addEventListener('click',()=>{
+            const phoneContainer = document.getElementById('display-phone')
+            phoneContainer.innerText = ''
+        for(const data of datas){
+            const div = document.createElement('div')
+            div.innerHTML = `
+                <div class="col">
+                <div class="card">
+                    <img height="350px" src=${data.image} class="card-img-top" alt="...">
+                    <div class="card-body">
+                    <h5 class="card-title">${data.phone_name}</h5>
+                    <p class="card-text">${data.brand}</p>
+                        <a onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details<a/>
+                        <a onclick="moreDetails('${data.slug}')" class="btn btn-primary">More Details<a/>
+                    </div>
                 </div>
-            </div>
-            </div>
-        `
-        phoneContainer.appendChild(div)
-        document.getElementById('show').style.display='none'
+                </div>
+            `
+            phoneContainer.appendChild(div)
+            document.getElementById('show').style.display='none'
+        }
+
+        })
     }
-    })
 } 
+
 
 //More Details API calling
 const moreDetails = id =>{
